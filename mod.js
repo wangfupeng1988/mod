@@ -153,6 +153,14 @@ var define;
         if (ret) {
             mod.exports = ret;
         }
+        
+        // 用 fis3-parser-typescript 的时候，把这段加上，用 babel 的时候不需要。
+        // 如果不加，用 fis3-parser-typescript 时候需要这样引用：import * as React from 'react'，加上即可正常这样引用了 import React from 'react'
+        if (mod.exports && !mod.exports['default'] && Object.defineProperty && Object.isExtensible(mod.exports)) {
+            Object.defineProperty(mod.exports, 'default', {
+                value: mod.exports
+            });
+        }
 
         return mod.exports;
     };
